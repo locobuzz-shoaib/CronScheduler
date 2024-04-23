@@ -23,6 +23,7 @@ try:
     SQL_SERVER = configuration.get("sql_server_ip")
     GCHAT_WEBHOOK = configuration.get("hook")
     GCHAT_WEBHOOK_ERROR = configuration.get("error_log")
+    MAILGUN = configuration.get("main_gun_key")
     MSSQL_AUTH = {
         "rw": {
             "username": SQL_USERNAME,

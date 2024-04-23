@@ -1,8 +1,9 @@
 import croniter
 from datetime import datetime, timedelta
-import time
+from config import MAILGUN
 import json
-from utils import get_cron_details, service_api_call, update_api_call_details, update_log_table, dict_to_query_string
+from utils import (get_cron_details, service_api_call, update_api_call_details, update_log_table, dict_to_query_string,
+                   send_email_via_mailgun)
 
 while True:
 
@@ -40,6 +41,8 @@ while True:
         if next_time <= current_time + timedelta(seconds=60):
             response = service_api_call(url=url, timeout=60)
             if response is None:
+                send_email_via_mailgun(subject='Service Api Call Failed', auth=MAILGUN,
+                                       text=url, receivers=['anuj.gaur@locobuzz.com'])
                 print(f'Service Api call failed : {url}')
                 continue
 

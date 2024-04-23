@@ -14,6 +14,7 @@ def get_cron_details():
     df = sql_conn_obj.fetch_df()
     return df
 
+
 def service_api_call(url, timeout):
     retry = 0
     while retry < 4:
@@ -36,6 +37,7 @@ def update_api_call_details(LastHitDate, UpcomingHitDate, URLHit, CronID, EndPoi
     sql_conn_obj.execute(query)
     sql_conn_obj.commit()
 
+
 def update_log_table(CronId):
     query = f'''Insert into Spatialrss.dbo.CroneJobScheduleDetails_log
             (CronId,HostName ,Path ,ActionPath ,ParameterJson ,ExcludedCategoryIds ,BrandJson ,ChannelGroupId 
@@ -49,6 +51,7 @@ def update_log_table(CronId):
     sql_conn_obj.execute(query)
     sql_conn_obj.commit()
 
+
 def dict_to_query_string(d):
     query_string = ""
     for key, value in d.items():
@@ -56,3 +59,20 @@ def dict_to_query_string(d):
             query_string += "&"
         query_string += f"{key}={value}"
     return query_string
+
+
+def send_email_via_mailgun(subject: str, text: str, auth: str, file_path: str = '',
+                           receivers: list = ['anuj.gaur@locobuzz.com'],
+                           sender: str = "Locobuzz",
+                           html: str = ''):
+    email_params = dict(url="https://api.mailgun.net/v3/locobuzz.info/messages",
+                        auth=("api", auth),
+                        data={"from": f"%s <no-reply@locobuzz.com>" % sender,
+                              "to": receivers,
+                              "subject": subject,
+                              "text": text,
+                              "html": html})
+
+    response = requests.post(**email_params)
+    return response
+
