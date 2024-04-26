@@ -17,7 +17,7 @@ except PermissionError:
     sys.exit(0)
 
 try:
-    environ = configuration.get("environ", "")
+    ENVIRON = configuration.get("environ", "")
     SQL_USERNAME = configuration.get("sql_user_name")
     SQL_PASSWORD = configuration.get("sql_pass_word")
     SQL_SERVER = configuration.get("sql_server_ip")
@@ -29,7 +29,8 @@ try:
             "username": SQL_USERNAME,
             "password": SQL_PASSWORD,
             "db_name": "Spatialrss",
-            "IP": SQL_SERVER
+            "IP": SQL_SERVER,
+            "port": 1401
         }}
 
     LOG_ENABLED = configuration.get("log_enabled", "production")
